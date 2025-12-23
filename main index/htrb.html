@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>.gg/heartthrob</title>
+
+<!-- Font Awesome (free icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p1Cm3z9s0J6Cj6Q8k0b6g3GQn0mQG7c1t6f1mFq0l9zJQb4fE0X9M2h3sK2oY9b1T8s3k3u3k3k3k3==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+:root{
+    --bg: #0f0f12;
+    --card: rgba(15,15,15,0.8);
+    --neon: #ffd700;
+    --accent: #8a2be2;
+    --glass: rgba(255,255,255,0.03);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body {
+    margin: 0;
+    background: linear-gradient(180deg,#0b0b0d 0%, #121216 100%);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px;
+    color: #e9e9e9;
+    overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("HTRBB.png") no-repeat center center;
+  background-attachment: fixed;
+  background-size: cover;
+  filter: blur(3px);
+  transform: scale(1.05);
+  z-index: -1;
+}
+
+.wrap{
+    width:100%;
+    max-width: 1180px;
+    padding:20px;
+}
+
+.container {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.popup {
+    width: 340px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 14px;
+    padding: 18px;
+    color: white;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 18px rgba(138,43,226,0.06) inset;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px) saturate(120%);
+}
+
+.popup::before{
+    content:"";
+    position:absolute;inset:0;pointer-events:none;
+    background: linear-gradient(120deg, rgba(138,43,226,0.04), rgba(255,215,0,0.02));
+    mix-blend-mode: screen;opacity:0;transition:opacity .3s;
+}
+.popup:hover{transform: translateY(-8px) scale(1.02);}
+.popup:hover::before{opacity:1}
+
+.neon-accent{
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.6), 0 0 20px rgba(138,43,226,0.08);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left{
+    display:flex;align-items:center;gap:12px;
+}
+
+.avatar-wrap{position:relative}
+.avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 4px solid rgba(0,0,0,0.6);
+    transition: transform .35s ease, box-shadow .35s;
+    object-fit: cover;
+    background: linear-gradient(180deg,#222,#111);
+}
+
+.popup:hover .avatar{transform: rotate(-6deg) scale(1.02); box-shadow: 0 8px 28px rgba(138,43,226,0.12)}
+
+.status-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    border: 3px solid var(--card);
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.small {
+    font-size: 13px;color:#bfc0c6
+}
+
+.state {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    padding: 6px 12px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    color:#ddd;
+    border:1px solid rgba(255,255,255,0.02)
+}
+
+.spotify-box {
+    margin-top: 14px;
+    background: rgba(0,0,0,0.25);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #e6e6e6;
+    display:flex;gap:12px;align-items:center
+}
+
+.spotify-art{width:56px;height:56px;border-radius:8px;background:#111;flex:0 0 56px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.spotify-art img{width:100%;height:100%;object-fit:cover;border-radius:8px;display:block}
+.spotify-meta{flex:1}
+.song{font-weight:700}
+.artist{font-size:13px;color:#cfcfd3}
+
+.center-loading {
+    margin-top: 12px;
+    text-align: center;
+    font-style: italic;
+    color: var(--neon);
+    font-size: 13px;
+}
+.details{
+    max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.9,.2,1);margin-top:8px
+}
+.popup.open .details{max-height:360px}
+
+.social-row{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+.social-row a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;height:36px;border-radius:10px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.03);
+    text-decoration:none;
+    transition:transform .15s, background .15s;
+    color: #fff;
+    font-size:16px;
+}
+.social-row a:hover{transform:translateY(-4px);background:rgba(255,255,255,0.04)}
+
+.game-badge{
+    display:inline-block;padding:6px 10px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);font-size:13px;margin-top:10px;color:#fff
+}
+
+/* responsive */
+@media (max-width:900px){
+    body{padding:24px}
+    .container{gap:18px}
+    .popup{width:calc(50% - 20px)}
+}
+@media (max-width:640px){
+    .popup{width:100%}
+}
+
+.spotify-playing{animation:neonPulse 1.6s infinite}
+@keyframes neonPulse{
+    0%{box-shadow:0 0 6px rgba(255, 0, 0, 0.741), inset 0 0 6px rgba(138,43,226,0.02)}
+    50%{box-shadow:0 0 18px rgba(255, 0, 0, 0.729), inset 0 0 12px rgba(138,43,226,0.06)}
+    100%{box-shadow:0 0 6px rgba(255, 0, 0, 0.711), inset 0 0 6px rgba(138,43,226,0.02)}
+}
+
+.time-badge{font-weight:600;color:#fff;background:linear-gradient(90deg, rgba(138,43,226,0.14), rgba(255,215,0,0.09));padding:6px 10px;border-radius:8px;font-size:13px}
+
+@media (max-width:500px){
+    body{padding:14px}
+    .username{font-size:16px}
+    .avatar{width:54px;height:54px}
+    .spotify-box{flex-direction:column;align-items:flex-start}
+}
+      :root {
+  --bg: #000;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-blur: 10px;
+  --accent: rgba(255, 255, 255, 0.06);
+
+  --online: #43b581;
+  --idle: #faa61a;
+  --dnd: #f04747;
+  --offline: #636b75;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 18px;
+  border-radius: 50px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.member-list a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.member {
+  cursor: pointer;
+}
+
+
+.member:hover {
+  transform: rotateY(12deg) rotateX(5deg) scale(1.05);
+  box-shadow: 0px 5px 25px rgba(255,255,255,0.15);
+}
+
+.member img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--offline);
+  transition: border 0.3s ease;
+}
+
+.member span {
+  font-size: 12px;
+  color: white;
+  font-weight: 600;
+}
+
+/* Tooltip popup */
+.status-popup {
+  position: absolute;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  transform: translate(-50%, -120%);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.member:hover .status-popup {
+  opacity: 1;
+}
+
+/* Slider fixes */
+.member-slider {
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+  position: relative;
+}
+
+.member-list {
+  display: flex;
+  gap: 25px;
+  width: max-content;
+  animation: scrollLoop 60s linear infinite;
+}
+
+@keyframes scrollLoop {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+      h2 {
+        margin: 0 0 28px;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: #e8e8e8;
+        background: linear-gradient(to right, #fff, #000, #fff);
+        background-size: 1000% 100%;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: infiniteGradient 5s linear infinite;
+      }
+
+      @keyframes infiniteGradient {
+        0% {
+          background-position: 0% 0%;
+        }
+
+        100% {
+          background-position: 100% 300%;
+        }
+      }
+
+      .h2:hover {
+        transform: scale(1.2);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      }
+
+      .profiles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        /* smaller gap */
+        justify-content: center;
+        padding: 22px 22px 20px;
+      }
+
+      .profile {
+        --size: 110px;
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background-color: #111;
+        background-size: cover;
+        background-position: center center;
+        position: relative;
+        cursor: pointer;
+        transition: transform 220ms ease, box-shadow 220ms ease;
+        flex: 0 0 var(--size);
+        z-index: 1;
+      }
+
+      .profile:hover {
+        transform: translateY(-6px) scale(1.02);
+      }
+
+      .profile .status-ring {
+        position: absolute;
+        right: 6px;
+        bottom: 6px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #777;
+        border: 3px solid rgba(0, 0, 0, 0.6);
+        pointer-events: none;
+      }
+
+      .card {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -150%) translateY(6px);
+        top: 0;
+        min-width: 240px;
+        max-width: 320px;
+        padding: 12px 12px 12px 12px;
+        border-radius: 14px;
+        background: var(--card-bg);
+        backdrop-filter: blur(var(--card-blur));
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 220ms ease, transform 220ms ease;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        z-index: 9999;
+        white-space: normal;
+      }
+
+      .card.visible {
+        opacity: 1;
+        transform: translate(-50%, -180%) translateY(0);
+        pointer-events: auto;
+      }
+
+      .card .card-pfp {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        object-fit: cover;
+        background: #222;
+        border: 2px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .card .card-content {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .card .name {
+        font-weight: 800;
+        font-size: 16px;
+        line-height: 1;
+        color: #f0f0f0;
+      }
+
+      .card .status {
+        font-size: 13px;
+        color: #dcdcdc;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card .custom {
+        font-size: 13px;
+        color: #e8e8e8;
+        opacity: 0.95;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+      }
+
+      @media (max-width:520px) {
+        .card {
+          left: 50%;
+          transform: translate(-50%, -200%);
+          min-width: 200px;
+        }
+
+        .profile {
+          --size: 90px;
+        }
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -8px;
+        width: 12px;
+        height: 12px;
+        background: var(--card-bg);
+        backdrop-filter: blur(var(--card-blur));
+        transform-origin: center;
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+
+      img.logo {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        display: inline-block;
+      }
+
+      img.logo:hover {
+        transform: scale(1.08);
+      }
+
+/* Mouse star trail */
+.star {
+    position: fixed;
+    pointer-events: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, rgba(255,215,0,0.9) 30%, rgba(138,43,226,0.2) 60%, transparent 70%);
+    transform: translate(-50%, -50%) scale(1);
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 8px rgba(255,215,0,0.25));
+    opacity: 0.95;
+    mix-blend-mode: screen;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<div style="text-align: center;">
+    <h2 class="neon-accent">HEARTTHROB</h2>
+    <p class="small">Hail to those.</p>
+</div>
+
+
+    <div class="container">
+
+        <!-- Popup 1 -->
+        <div class="popup" id="popup1" data-link="index.html" role="button" tabindex="0">
+            <div class="header">
+                <div class="left">
+                    <div class="avatar-wrap">
+                        <img id="avatar1" class="avatar" src="https://via.placeholder.com/68" alt="avatar" />
+                        <div id="statusDot1" class="status-dot" title="status"></div>
+                    </div>
+                    <div>
+                        <div class="username" id="username1">Loading...</div>
+                        <div class="small state" id="discordState1">---</div>
+                    </div>
+                </div>
+                <div class="time-badge" id="time1">--:--</div>
+            </div>
+
+            <div class="center-loading" id="loading1">"loading..."</div>
+
+            <div class="spotify-box" id="spotify1">
+                <div class="spotify-art" id="spotifyArt1"><!-- img goes here --></div>
+                <div class="spotify-meta">
+                    <div class="song" id="song1">No connection</div>
+                    <div class="artist" id="artist1">Loading...</div>
+                </div>
+            </div>
+
+            <div class="details" id="details1">
+                <p class="small" id="activity1">—</p>
+                <div class="game-badge" id="game1" style="display:none"></div>
+
+                <!-- social row -->
+                <div class="social-row" id="socials1">
+                    <!-- Font Awesome anchors added by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup 2 -->
+        <div class="popup" id="popup2" data-link="satchie.html" role="button" tabindex="0">
+            <div class="header">
+                <div class="left">
+                    <div class="avatar-wrap">
+                        <img id="avatar2" class="avatar" src="https://via.placeholder.com/68" alt="avatar" />
+                        <div id="statusDot2" class="status-dot" title="status"></div>
+                    </div>
+                    <div>
+                        <div class="username" id="username2">Loading...</div>
+                        <div class="small state" id="discordState2">---</div>
+                    </div>
+                </div>
+                <div class="time-badge" id="time2">--:--</div>
+            </div>
+
+            <div class="center-loading" id="loading2">"loading..."</div>
+
+            <div class="spotify-box" id="spotify2">
+                <div class="spotify-art" id="spotifyArt2"><!-- img --></div>
+                <div class="spotify-meta">
+                    <div class="song" id="song2">No connection</div>
+                    <div class="artist" id="artist2">Loading...</div>
+                </div>
+            </div>
+
+            <div class="details" id="details2">
+                <p class="small" id="activity2">—</p>
+                <div class="game-badge" id="game2" style="display:none"></div>
+
+                <!-- social row -->
+                <div class="social-row" id="socials2"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+        <div style="text-align: center;">
+        <h2>members</h2>
+        </div>
+<div class="member-slider">
+  <div id="member-list" class="member-list"></div>
+
+  </div>
+</div>
+
+        
+    </div>
+</div>
+<div></div>
+<footer style="position: fixed; bottom: 0; width: 75%; text-align: center; padding: 10px; background-color: #11111100; color: #fe0505a9;">
+    Developed | snotty1037
+</footer>
+</div>
+<script>
+/*
+  Config: replace with your real user IDs and social links
+*/
+const USER1 = "751257222792872056";
+const USER2 = "745157573744787537";
+const MEMBERS = [
+  { id: "1372212506432503978", name: "Jazx Heartthrob", link: "jazx.html" },
+  { id: "1284212542734074039", name: "Kyo Heartthrob", link: "kyo.html" },
+  { id: "976431426943741992",  name: "Szae Heartthrob", link: "szae.html" },
+  { id: "1158050720285724795", name: "Hachi Heartthrob", link: "hachi.html" },
+  { id: "1387105042921951284", name: "Lux Amores Heartthrob", link: "lux.html" },
+  { id: "1250734764521029678", name: "Sebi Heartthrob", link: "sebi.html" },
+  { id: "1007877981215137834", name: "Charm Heartthrob", link: "charm.html" },
+  { id: "1146119685188894800", name: "Alice Heartthrob", link: "arisu.html" },
+  { id: "748468266401398805", name: "Sam Heartthrob", link: "sam.html" },
+  { id: "1392506822849724479", name: "Sosa Heartthrob", link: "sosa.html" },
+  { id: "976431426943741992",  name: "Zyna Heartthrob", link: "zyna.html" },
+  { id: "1158050720285724795", name: "Santi Heartthrob", link: "santi.html" },
+  { id: "824926217685041155", name: "Lunia Heartthrob", link: "lunia.html" },  
+];
+
+const SOCIALS = {
+    "1": {
+        instagram: "https://www.instagram.com/justhushkurt/",
+        discord: "https://discord.com/users/751257222792872056",
+        github: "https://github.com/jaox1855",
+        spotify: "https://open.spotify.com/user/31dozuibn6nsfka22eovw22hnzp4?si=e6740d6dffad41ab"
+    },
+    "2": {
+        instagram: "https://instagram.com/your_instagram_2",
+        discord: "https://discord.com/users/745157573744787537",
+        github: "https://github.com/your_github_2",
+        spotify: "https://open.spotify.com/user/your_spotify_profile_2"
+    }
+};
+
+/* Helper to add FA icons to social row */
+function buildSocials(index) {
+    const container = document.getElementById('socials' + index);
+    container.innerHTML = '';
+    const s = SOCIALS[String(index)] || {};
+    function add(href, classes, title) {
+        if(!href) return;
+        const a = document.createElement('a');
+        a.href = href;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.title = title;
+        a.innerHTML = `<i class="${classes}" aria-hidden></i>`;
+        container.appendChild(a);
+    }
+    add(s.instagram, 'fab fa-instagram', 'Instagram');
+    add(s.discord, 'fab fa-discord', 'Discord');
+    add(s.github, 'fab fa-github', 'GitHub');
+    add(s.spotify, 'fab fa-spotify', 'Spotify');
+}
+
+
+/* Pre-build socials for both popups */
+buildSocials(1); buildSocials(2);
+
+/* Status color mapping */
+const STATUS_MAP = {online:'#3ba55d', idle:'#faa61a', dnd:'#ed4245', offline:'#6b6b6b'};
+
+/* Utility: pretty time */
+function updateClock(index){
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2,'0');
+    const m = now.getMinutes().toString().padStart(2,'0');
+    document.getElementById('time'+index).textContent = `${h}:${m}`;
+}
+setInterval(()=>{ updateClock(1); updateClock(2); }, 60*1000);
+updateClock(1); updateClock(2);
+
+/* Graceful fallback: initial REST fetch (optional) */
+async function restFetch(user, index){
+    try{
+        const r = await fetch(`https://api.lanyard.rest/v1/users/${user}`);
+        const j = await r.json();
+        if(j && j.success && j.data){
+            handlePresence(j.data, index);
+        }
+    }catch(e){
+        console.warn('REST fetch failed', e);
+    }
+}
+restFetch(USER1,1); restFetch(USER2,2);
+
+/* MAIN: Lanyard websocket connection */
+const socketUrl = 'wss://api.lanyard.rest/socket';
+let ws;
+let heartbeatIntervalId = null;
+
+function connectWS(){
+    ws = new WebSocket(socketUrl);
+
+    ws.addEventListener('open', ()=> {
+        console.log('Lanyard WS open');
+    });
+
+    ws.addEventListener('message', (ev) => {
+        try{
+            const msg = JSON.parse(ev.data);
+            // opcodes:
+            // 1 = Hello (contains heartbeat interval)
+            // 0 with t = INIT_STATE or PRESENCE_UPDATE
+            if(msg.op === 1 && msg.d && msg.d.heartbeat_interval){
+                // send initialize - subscribe to all target ids (USER1, USER2 and MEMBERS)
+                const allIds = [USER1, USER2, ...MEMBERS.map(m => m.id)];
+                const init = { op: 2, d: { subscribe_to_ids: allIds } };
+                ws.send(JSON.stringify(init));
+                // start heartbeat
+                if(heartbeatIntervalId) clearInterval(heartbeatIntervalId);
+                const ms = msg.d.heartbeat_interval;
+                heartbeatIntervalId = setInterval(()=> {
+                    try { ws.send(JSON.stringify({ op: 3 })); } catch(e){ console.warn('heartbeat send failed', e); }
+                }, ms);
+            } else if(msg.op === 0 && msg.t){
+                if(msg.t === 'INIT_STATE'){
+                    // d is a map of user_id -> presence
+                    const map = msg.d || {};
+                    for(const key in map){
+                        if(!map[key]) continue;
+                        const idx = (key === USER1) ? 1 : ((key === USER2) ? 2 : null);
+                        if(idx) handlePresence(map[key], idx);
+                        else handlePresence(map[key]); // update members as well
+                    }
+                } else if(msg.t === 'PRESENCE_UPDATE'){
+                    const d = msg.d;
+                    const uid = d.user_id || (d.discord_user && d.discord_user.id);
+                    const idx = (uid === USER1) ? 1 : ((uid === USER2) ? 2 : null);
+                    if(idx) handlePresence(d, idx);
+                    else handlePresence(d); // member presence
+                } else {
+                    // other events (ignored)
+                }
+            } else {
+                // ignore other ops
+            }
+        }catch(err){
+            console.error('WS message parse fail', err, ev.data);
+        }
+    });
+
+    ws.addEventListener('close', (ev) => {
+        console.warn('Lanyard WS closed', ev.reason || ev);
+        if(heartbeatIntervalId) clearInterval(heartbeatIntervalId);
+        // reconnect after short delay
+        setTimeout(connectWS, 2500);
+    });
+
+    ws.addEventListener('error', (err) => {
+        console.error('Lanyard WS error', err);
+        ws.close();
+    });
+}
+connectWS();
+
+function handlePresence(d, idx){
+    try{
+        // some responses put data under d.data (REST wrapper) - normalize
+        const presence = d && d.discord_user ? d : d;
+
+        // if idx provided, update popup1/popup2 (existing behavior)
+        if(idx === 1 || idx === 2){
+            // avatar + username
+            const avatarUrl = presence.discord_user && presence.discord_user.avatar
+                ? `https://cdn.discordapp.com/avatars/${presence.discord_user.id}/${presence.discord_user.avatar}.png?size=256`
+                : 'https://via.placeholder.com/68';
+            document.getElementById('avatar'+idx).src = avatarUrl;
+            const uname = presence.discord_user?.username ?? 'Unknown';
+            const discrim = presence.discord_user?.discriminator ? `#${presence.discord_user.discriminator}` : '';
+            document.getElementById('username'+idx).textContent = `${uname}${discrim}`;
+
+            // status
+            const status = presence.discord_status || 'offline';
+            const color = STATUS_MAP[status] || '#808080';
+            const dot = document.getElementById('statusDot'+idx);
+            dot.style.background = color;
+            dot.style.boxShadow = `0 0 12px ${color}66`;
+            document.getElementById('discordState'+idx).textContent = String(status).toUpperCase();
+
+            // activities & custom status
+            const activities = presence.activities || [];
+            const activityEl = document.getElementById('activity'+idx);
+            let customState = null;
+            for(const a of activities){
+                if(a.type === 4 && a.state){ customState = a.state; break; }
+            }
+            if(customState){ activityEl.textContent = customState; }
+            else {
+                const other = activities.filter(a => a.type !== 2 && a.type !== 4 && (a.name && a.name.toLowerCase() !== 'spotify')).map(a=>{
+                    if(a.name && a.details) return `${a.name} — ${a.details}`;
+                    if(a.name) return a.name;
+                    return '';
+                }).filter(Boolean);
+                activityEl.textContent = other.length ? other.join(', ') : 'No active activities';
+            }
+
+            // Spotify
+            const songEl = document.getElementById('song'+idx);
+            const artistEl = document.getElementById('artist'+idx);
+            const artContainer = document.getElementById('spotifyArt'+idx);
+            const spotifyBox = document.getElementById('spotify'+idx);
+            artContainer.innerHTML = '';
+            artContainer.style.background = '';
+
+            if(presence.listening_to_spotify && presence.spotify){
+                const sp = presence.spotify;
+                songEl.textContent = sp.song ?? 'Unknown track';
+                artistEl.textContent = `${sp.artist ?? 'Unknown artist'} • ${sp.album ?? ''}`;
+                if(sp.album_art_url){
+                    const img = document.createElement('img');
+                    img.alt = sp.song ? `Album art for ${sp.song}` : 'Spotify album art';
+                    img.src = sp.album_art_url;
+                    artContainer.appendChild(img);
+                } else {
+                    artContainer.style.background = '#111';
+                }
+                spotifyBox.classList.add('spotify-playing');
+            } else {
+                // fallback: check activities for spotify-like entry
+                const spAct = activities.find(a => a.name && a.name.toLowerCase() === 'spotify');
+                if(spAct){
+                    songEl.textContent = spAct.details || 'Playing on Spotify';
+                    artistEl.textContent = spAct.state || '—';
+                    spotifyBox.classList.remove('spotify-playing');
+                } else {
+                    songEl.textContent = 'Not listening';
+                    artistEl.textContent = '—';
+                    artContainer.style.background = '#111';
+                    spotifyBox.classList.remove('spotify-playing');
+                }
+            }
+
+            // Game detection (Playing statuses, type 0)
+            const playing = activities.find(a => a.type === 0 || (a.name && /fivem|valorant|league of legends|minecraft|roblox/i.test(a.name)));
+            const gameBadge = document.getElementById('game'+idx);
+            if(playing && playing.name){
+                const name = playing.name;
+                let extra = '';
+                if(playing.details) extra = playing.details;
+                else if(playing.state) extra = playing.state;
+                gameBadge.style.display = 'inline-block';
+                gameBadge.textContent = `${name}${extra ? ' — ' + extra : ''}`;
+            } else {
+                gameBadge.style.display = 'none';
+                gameBadge.textContent = '';
+            }
+
+            // hide loading
+            const loading = document.getElementById('loading'+idx);
+            if(loading) loading.style.display = 'none';
+
+            return;
+        }
+
+        // Otherwise, update a member tile (if present)
+        const uid = presence.discord_user?.id;
+        if(uid){
+            const memberEl = document.querySelector(`.member[data-uid="${uid}"]`);
+            if(memberEl){
+                const img = memberEl.querySelector("img");
+                const popup = memberEl.querySelector(".status-popup");
+
+                // set avatar
+                if(presence.discord_user?.avatar){
+                    img.src = `https://cdn.discordapp.com/avatars/${uid}/${presence.discord_user.avatar}.png?size=128`;
+                } else {
+                    img.src = 'https://via.placeholder.com/64';
+                }
+
+                // set status popup & border color
+                const st = presence.discord_status || "offline";
+                const color = STATUS_MAP[st] || "#777";
+                img.style.borderColor = color;
+                popup.textContent = (presence.discord_user?.username ? presence.discord_user.username + (presence.discord_user.discriminator ? `#${presence.discord_user.discriminator}` : '') : 'Unknown') + ` — ${String(st).toUpperCase()}`;
+
+                // optionally show if listening to Spotify by adding a small badge
+                if(presence.listening_to_spotify){
+                    memberEl.classList.add('spotify-playing');
+                } else {
+                    memberEl.classList.remove('spotify-playing');
+                }
+            }
+        }
+
+    }catch(err){
+        console.error('handlePresence error', err);
+    }
+}
+
+/* Toggle popups (unchanged) */
+[1,2].forEach(i => {
+  const el = document.getElementById(`popup${i}`);
+
+  el.addEventListener('click', () => {
+    const link = el.dataset.link;
+    if (link) window.location.href = link;
+  });
+
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const link = el.dataset.link;
+      if (link) window.location.href = link;
+    }
+  });
+});
+function renderMembers() {
+  const list = document.getElementById("member-list");
+  list.innerHTML = "";
+
+  MEMBERS.forEach(m => {
+    const a = document.createElement("a");
+    a.href = m.link;
+    a.className = "member";
+    a.dataset.uid = m.id;
+
+    a.innerHTML = `
+      <img class="member-avatar" src="https://via.placeholder.com/64" alt="${m.name}" />
+      <span>${m.name}</span>
+      <div class="status-popup">Loading...</div>
+    `;
+
+    list.appendChild(a);
+  });
+}
+renderMembers();
+
+/* Pre-fetch REST profile for members to populate avatars/status immediately */
+MEMBERS.forEach(m => restFetch(m.id));
+restFetch(USER1,1); restFetch(USER2,2);
+
+/* ---------- Mouse star trail animation ---------- */
+let starIdCounter = 0;
+const maxStars = 40; // limit number of live stars
+const stars = [];
+
+function spawnStar(x,y){
+    const el = document.createElement('div');
+    el.className = 'star';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.opacity = '1';
+    el.dataset.id = ++starIdCounter;
+    document.body.appendChild(el);
+    stars.push(el);
+
+    // randomize scale & life
+    const scale = 0.6 + Math.random() * 1.2;
+    el.style.transform = `translate(-50%,-50%) scale(${scale})`;
+    const life = 700 + Math.random() * 700;
+
+    // animate outward slightly and fade
+    const dx = (Math.random()-0.5) * 40;
+    const dy = (Math.random()-0.5) * 40;
+
+    // use requestAnimationFrame based fade
+    const start = performance.now();
+    function frame(now){
+        const t = (now - start) / life;
+        if(t >= 1){
+            el.remove();
+            const idx = stars.indexOf(el);
+            if(idx >= 0) stars.splice(idx,1);
+            return;
+        }
+        const ease = 1 - Math.pow(1 - t, 2);
+        el.style.transform = `translate(${dx * ease - 50}%, ${dy * ease - 50}%) scale(${scale * (1 - 0.2 * t)})`;
+        el.style.opacity = `${1 - t}`;
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    // enforce max stars
+    if(stars.length > maxStars){
+        const rem = stars.splice(0, stars.length - maxStars);
+        rem.forEach(e=>e.remove());
+    }
+}
+
+let lastMove = 0;
+document.addEventListener('mousemove', (e)=>{
+    const now = Date.now();
+    // throttle spawn a bit
+    if(now - lastMove > 16){ // ~60fps cap
+        spawnStar(e.clientX, e.clientY);
+        lastMove = now;
+    }
+});
+
+/* Also spawn tiny burst on click */
+document.addEventListener('click', (e)=>{
+    for(let i=0;i<4;i++){
+        setTimeout(()=> spawnStar(e.clientX + (Math.random()-0.5)*20, e.clientY + (Math.random()-0.5)*20), i*30);
+    }
+});
+</script>
+</body>
+</html>
