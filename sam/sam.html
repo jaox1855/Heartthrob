@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sam</title>
+<link rel="icon" type="image/png" href="/HEARTTHROB.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/HEARTTHROB.png" />
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #18191c;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 30px;
+  /* Background image - change URL to your GIF or PNG */
+  background-image: url('samm.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Dark overlay for better readability */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.profile-panel {
+  width: 700px;
+  background: rgba(47, 49, 54, 0.75);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Smooth scrollbar for activities */
+.profile-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.profile-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.profile-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.banner {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #202225, #2f3136);
+  display: block;
+}
+
+.banner.hidden {
+  display: none;
+}
+
+.profile-info {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  align-items: center;
+}
+
+.profile-info img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #7289da;
+  object-fit: cover;
+  background: #111;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.username-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.username-section h2 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9bbbe;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) inset, 0 0 10px currentColor;
+  animation: pulse-status 2s ease-in-out infinite;
+}
+
+@keyframes pulse-status {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+  cursor: pointer;
+}
+
+.social-links a:hover:not(.disabled) {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.social-links a.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.custom-status {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: #b9bbbe;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-icon {
+  font-size: 16px;
+}
+
+.activities {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 80px;
+}
+
+.activity, .spotify, .music-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activity {
+  background: rgba(54, 57, 63, 0.6);
+}
+
+.activity img, .spotify img, .music-player img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.activity-info h3, .spotify-info h3, .music-player-info h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.activity-info p, .spotify-info p, .music-player-info p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #b9bbbe;
+}
+
+.spotify {
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.4), rgba(26, 163, 74, 0.4));
+  border: 1px solid rgba(29, 185, 84, 0.3);
+}
+
+.music-player {
+  background: linear-gradient(135deg, rgba(114, 137, 218, 0.4), rgba(88, 101, 242, 0.4));
+  border: 1px solid rgba(114, 137, 218, 0.3);
+}
+
+.spotify-progress, .music-progress {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 10px;
+  position: relative;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.spotify-progress:hover .spotify-progress-inner,
+.music-progress:hover .music-progress-inner {
+  background: linear-gradient(90deg, rgba(29, 185, 84, 1), rgba(26, 163, 74, 0.8));
+}
+
+.music-progress:hover .music-progress-inner {
+  background: linear-gradient(90deg, rgba(114, 137, 218, 1), rgba(88, 101, 242, 0.8));
+}
+
+.spotify-progress-inner, .music-progress-inner {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(29, 185, 84, 0.95), rgba(26, 163, 74, 0.7));
+  border-radius: 8px;
+  position: relative;
+  transition: width 0.15s linear;
+}
+
+.music-progress-inner {
+  background: linear-gradient(90deg, rgba(114, 137, 218, 0.95), rgba(88, 101, 242, 0.7));
+}
+
+.spotify-progress-inner::after, .music-progress-inner::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.spotify-progress:hover .spotify-progress-inner::after,
+.music-progress:hover .music-progress-inner::after {
+  opacity: 1;
+}
+
+.spotify-timestamps, .music-timestamps {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 6px;
+}
+
+.music-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.music-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.music-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.music-btn.active {
+  background: rgba(114, 137, 218, 0.5);
+}
+
+.badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.no-activity {
+  text-align: center;
+  color: #72767d;
+  padding: 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 720px) {
+  .profile-panel {
+    width: 100%;
+    position: relative;
+  }
+
+  body {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="profile-panel">
+  <img class="banner hidden" id="banner" src="" alt="Banner">
+  <div class="profile-info">
+    <img id="avatar" src="" alt="Avatar">
+    <div class="username-section">
+      <h2 id="username">Loading...</h2>
+      <div class="status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">offline</span>
+      </div>
+      <div class="badges" id="badges"></div>
+      <div class="social-links" id="socialLinks"></div>
+      <div id="customStatusContainer"></div>
+    </div>
+  </div>
+  <div class="activities" id="activities">
+    <div class="no-activity">Loading activities...</div>
+  </div>
+</div>
+
+<!-- Hidden audio element for music player -->
+<audio id="audioPlayer" style="display: none;"></audio>
+
+<script>
+const USER_ID = "748468266401398805"; // Get from developer.discord.com
+
+const SOCIAL_LINKS = {
+  tiktok: "https://www.tiktok.com/@xoxo.samxntha?_r=1&_t=ZS-92ClONIQUmD"
+};
+
+// MP3 Music Configuration - ADD YOUR MP3 URLs HERE
+const MUSIC_TRACKS = [
+  {
+    title: "Song 1",
+    artist: "$$$",
+    url: "low2.mp3", // Replace with your MP3 URL
+    cover: "sam.jpg"
+  },
+  {
+    title: "Song 2",
+    artist: "$$$",
+    url: "low1.mp3", // Replace with your MP3 URL
+    cover: "sam.jpg"
+  }
+  // Add more songs here
+];
+
+let rafHandle = null;
+let currentTrackIndex = 0;
+let isPlaying = false;
+const audioPlayer = document.getElementById("audioPlayer");
+
+function formatTime(ms) {
+  if (ms == null) return "0:00";
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const mm = Math.floor(s / 60);
+  const ss = String(s % 60).padStart(2, "0");
+  return `${mm}:${ss}`;
+}
+
+function cancelRaf() {
+  if (rafHandle) {
+    cancelAnimationFrame(rafHandle);
+    rafHandle = null;
+  }
+}
+
+function getStatusEmoji(statusType) {
+  const emojis = {
+    online: "🟢",
+    idle: "🟡",
+    dnd: "🔴",
+    offline: "⚫"
+  };
+  return emojis[statusType] || "⚫";
+}
+
+function playMusic(trackIndex = 0) {
+  if (MUSIC_TRACKS.length === 0) return;
+  
+  currentTrackIndex = trackIndex % MUSIC_TRACKS.length;
+  const track = MUSIC_TRACKS[currentTrackIndex];
+  
+  audioPlayer.src = track.url;
+  audioPlayer.play().catch(e => console.log("Autoplay blocked by browser:", e));
+  isPlaying = true;
+  updateMusicDisplay();
+}
+
+function pauseMusic() {
+  audioPlayer.pause();
+  isPlaying = false;
+  updateMusicDisplay();
+}
+
+function toggleMusic() {
+  if (isPlaying) {
+    pauseMusic();
+  } else {
+    playMusic(currentTrackIndex);
+  }
+}
+
+function nextTrack() {
+  playMusic(currentTrackIndex + 1);
+}
+
+function prevTrack() {
+  playMusic(currentTrackIndex - 1 < 0 ? MUSIC_TRACKS.length - 1 : currentTrackIndex - 1);
+}
+
+function updateMusicDisplay() {
+  const activitiesDiv = document.getElementById("activities");
+  const musicPlayerDiv = activitiesDiv.querySelector(".music-player");
+  
+  if (!musicPlayerDiv) return;
+  
+  const playBtn = musicPlayerDiv.querySelector(".play-btn");
+  if (playBtn) {
+    playBtn.textContent = isPlaying ? "⏸ Pause" : "▶ Play";
+    playBtn.classList.toggle("active", isPlaying);
+  }
+}
+
+function renderMusicPlayer() {
+  if (MUSIC_TRACKS.length === 0) return;
+  
+  const track = MUSIC_TRACKS[currentTrackIndex];
+  const activitiesDiv = document.getElementById("activities");
+  
+  // Remove old music player if exists
+  const oldPlayer = activitiesDiv.querySelector(".music-player");
+  if (oldPlayer) oldPlayer.remove();
+  
+  const div = document.createElement("div");
+  div.className = "music-player";
+  div.innerHTML = `
+    <img src="${track.cover}" alt="Album Cover">
+    <div class="music-player-info" style="flex:1">
+      <h3>🎶 ${track.title}</h3>
+      <p>${track.artist}</p>
+      <div class="music-progress">
+        <div class="music-progress-inner" id="musicProgressInner"></div>
+      </div>
+      <div class="music-timestamps">
+        <span id="musicStart">0:00</span>
+        <span id="musicEnd">0:00</span>
+      </div>
+      <div class="music-controls">
+        <button class="music-btn prev-btn">⏮ Prev</button>
+        <button class="music-btn play-btn active">⏸ Pause</button>
+        <button class="music-btn next-btn">Next ⏭</button>
+      </div>
+    </div>
+  `;
+  
+  activitiesDiv.insertBefore(div, activitiesDiv.firstChild);
+  
+  // Add event listeners
+  div.querySelector(".play-btn").addEventListener("click", toggleMusic);
+  div.querySelector(".prev-btn").addEventListener("click", prevTrack);
+  div.querySelector(".next-btn").addEventListener("click", nextTrack);
+  
+  updateMusicProgress();
+}
+
+function updateMusicProgress() {
+  const inner = document.getElementById("musicProgressInner");
+  const startEl = document.getElementById("musicStart");
+  const endEl = document.getElementById("musicEnd");
+  
+  if (!inner || !startEl || !endEl) return;
+  
+  const duration = audioPlayer.duration || 0;
+  const currentTime = audioPlayer.currentTime || 0;
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  
+  inner.style.width = progress.toFixed(1) + "%";
+  startEl.textContent = formatTime(currentTime * 1000);
+  endEl.textContent = formatTime(duration * 1000);
+  
+  rafHandle = requestAnimationFrame(updateMusicProgress);
+}
+
+// Audio event listeners
+audioPlayer.addEventListener("ended", () => {
+  nextTrack(); // Auto play next track
+});
+
+audioPlayer.addEventListener("timeupdate", () => {
+  updateMusicProgress();
+});
+
+async function fetchLanyard() {
+  try {
+    console.log("Fetching Lanyard data for user:", USER_ID);
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
+    const data = await res.json();
+    
+    if (!data.success) {
+      console.error("Lanyard API error:", data);
+      return;
+    }
+
+    const user = data.data;
+    console.log("Lanyard data:", user);
+
+    // Banner
+    const bannerEl = document.getElementById("banner");
+    const bannerHash = user.discord_user?.banner;
+    if (bannerHash) {
+      const isGif = bannerHash.startsWith("a_");
+      const ext = isGif ? "gif" : "png";
+      bannerEl.src = `https://cdn.discordapp.com/banners/${USER_ID}/${bannerHash}.${ext}?size=1024`;
+      bannerEl.classList.remove("hidden");
+    } else {
+      bannerEl.classList.add("hidden");
+    }
+
+    // Avatar
+    const avatarEl = document.getElementById("avatar");
+    const avatarHash = user.discord_user?.avatar;
+    if (avatarHash) {
+      const isGif = avatarHash.startsWith("a_");
+      avatarEl.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${avatarHash}.${isGif ? "gif" : "png"}?size=256`;
+    } else {
+      const discriminator = parseInt(user.discord_user?.discriminator || "0");
+      avatarEl.src = `https://cdn.discordapp.com/embed/avatars/${discriminator % 5}.png`;
+    }
+
+    // Username
+    document.getElementById("username").textContent = `${user.discord_user.username}#${user.discord_user.discriminator}`;
+
+    // Status
+    const statusMap = {
+      online: "#43b581",
+      idle: "#faa61a",
+      dnd: "#f04747",
+      offline: "#747f8d"
+    };
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    statusDot.style.backgroundColor = statusMap[user.discord_status] || "#747f8d";
+    statusText.textContent = user.discord_status.charAt(0).toUpperCase() + user.discord_status.slice(1);
+
+    // Custom Status (from Discord Rich Presence)
+    const customStatusContainer = document.getElementById("customStatusContainer");
+    customStatusContainer.innerHTML = "";
+    
+    if (user.activities && Array.isArray(user.activities)) {
+      const customStatus = user.activities.find(activity => activity.type === 4);
+      if (customStatus && customStatus.state) {
+        const emoji = customStatus.emoji?.name || "✨";
+        customStatusContainer.innerHTML = `
+          <div class="custom-status">
+            <span class="status-icon">${emoji}</span>
+            <span>${customStatus.state}</span>
+          </div>
+        `;
+      }
+    }
+
+    // Badges
+    const badgesEl = document.getElementById("badges");
+    const flags = user.discord_user?.public_flags || 0;
+    const badgeMap = [
+      [1, "https://cdn.jsdelivr.net/gh/jaox1855/discord-badges/staff.png", "Staff"],
+      [2, "https://cdn.jsdelivr.net/gh/jaox1855/discord-badges/partner.png", "Partner"],
+      [4, "https://cdn.jsdelivr.net/gh/jaox1855/discord-badges/hypesquad.png", "HypeSquad"],
+      [8, "https://cdn.jsdelivr.net/gh/jaox1855/discord-badges/bughunter.png", "Bug Hunter"],
+      [131072, "https://cdn.jsdelivr.net/gh/jaox1855/discord-badges/hypesquad_balance.png", "HypeSquad Balance"]
+    ];
+    const badgeEls = [];
+    badgeMap.forEach(([bit, src, title]) => {
+      if (flags & bit) {
+        badgeEls.push(`<img class="badge" src="${src}" title="${title}" alt="${title}">`);
+      }
+    });
+    badgesEl.innerHTML = badgeEls.length > 0 ? badgeEls.join("") : '<span style="color:#72767d;font-size:13px">No badges</span>';
+
+    // Social Links
+    const socialContainer = document.getElementById("socialLinks");
+    socialContainer.innerHTML = "";
+    const svgs = {
+        tiktok: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.85 2h3.03c.15 1.1.63 2.1 1.4 2.87a5.6 5.6 0 0 0 2.92 1.38v3.04c-1.06.1-2.12-.12-3.1-.65a6.7 6.7 0 0 1-1.22-.85v7.43a6.87 6.87 0 0 1-1.17 3.9 6.56 6.56 0 0 1-2.97 2.31c-1.28.47-2.7.55-4.07.23a6.77 6.77 0 0 1-3.47-1.98 6.94 6.94 0 0 1-1.86-3.6c-.27-1.57-.08-3.2.54-4.67a6.83 6.83 0 0 1 2.92-3.2 6.64 6.64 0 0 1 3.46-.83v3.12a3.7 3.7 0 0 0-3.46 2.52c-.2.57-.25 1.2-.14 1.81.12.61.4 1.17.82 1.63.43.46.98.8 1.6.98.62.19 1.28.2 1.9.03a3.64 3.64 0 0 0 1.55-.9c.42-.41.75-.93.96-1.5.22-.59.33-1.22.33-1.85V2z"/></svg>'    
+    }
+
+    Object.entries(svgs).forEach(([key, svg]) => {
+      const a = document.createElement("a");
+      const url = SOCIAL_LINKS[key];
+      a.innerHTML = svg;
+      a.title = key.charAt(0).toUpperCase() + key.slice(1);
+      
+      if (url) {
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.style.cursor = "pointer";
+      } else {
+        a.classList.add("disabled");
+        a.style.cursor = "default";
+      }
+      
+      socialContainer.appendChild(a);
+    });
+
+    // Activities
+    const activitiesDiv = document.getElementById("activities");
+    activitiesDiv.innerHTML = "";
+    cancelRaf();
+
+    // Render music player first
+    renderMusicPlayer();
+
+    let foundActivity = false;
+
+    // Check for Spotify activity
+    if (user.spotify && user.spotify.song) {
+      foundActivity = true;
+      const sp = user.spotify;
+      const startMs = sp.timestamps?.start || null;
+      const endMs = sp.timestamps?.end || null;
+
+      const div = document.createElement("div");
+      div.className = "spotify";
+      div.innerHTML = `
+        <img src="${sp.album_art_url || ''}" alt="Spotify Album Art">
+        <div class="spotify-info" style="flex:1">
+          <h3>🎵 ${sp.song || 'Unknown'}</h3>
+          <p>${sp.artist || 'Unknown Artist'}${sp.album ? ` - ${sp.album}` : ''}</p>
+          <div class="spotify-progress">
+            <div class="spotify-progress-inner" id="spotifyProgressInner"></div>
+          </div>
+          <div class="spotify-timestamps">
+            <span id="spotifyStart">0:00</span>
+            <span id="spotifyEnd">${formatTime(endMs - (startMs || 0))}</span>
+          </div>
+        </div>
+      `;
+      activitiesDiv.appendChild(div);
+
+      const inner = document.getElementById("spotifyProgressInner");
+      const startEl = document.getElementById("spotifyStart");
+      const endEl = document.getElementById("spotifyEnd");
+
+      function updateSpotify() {
+        if (!inner || !startEl || !endEl) return;
+        
+        if (startMs && endMs) {
+          const now = Date.now();
+          const duration = endMs - startMs;
+          const elapsed = Math.max(0, Math.min(duration, now - startMs));
+          const progress = (elapsed / duration) * 100;
+          
+          inner.style.width = progress.toFixed(1) + "%";
+          startEl.textContent = formatTime(elapsed);
+          endEl.textContent = formatTime(duration);
+        }
+        
+        rafHandle = requestAnimationFrame(updateSpotify);
+      }
+      
+      updateSpotify();
+    }
+
+    // Check for other activities (games, streaming, etc)
+    if (Array.isArray(user.activities)) {
+      user.activities.forEach(activity => {
+        if (activity.type === 0 && activity.name !== "Spotify") {
+          foundActivity = true;
+          const div = document.createElement("div");
+          div.className = "activity";
+          
+          let imgSrc = "";
+          if (activity.assets?.large_image) {
+            imgSrc = activity.assets.large_image.includes("http") 
+              ? activity.assets.large_image 
+              : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`;
+          }
+          
+          div.innerHTML = `
+            <img src="${imgSrc}" alt="${activity.name}" onerror="this.style.display='none'">
+            <div class="activity-info">
+              <h3>${activity.name}</h3>
+              <p>${activity.details || activity.state || 'No details'}</p>
+            </div>
+          `;
+          activitiesDiv.appendChild(div);
+        }
+      });
+    }
+
+    if (!foundActivity && MUSIC_TRACKS.length === 0) {
+      activitiesDiv.innerHTML = '<div class="no-activity">Not playing anything</div>';
+    }
+
+  } catch (e) {
+    console.error("Error fetching Lanyard:", e);
+    renderMusicPlayer();
+    cancelRaf();
+  }
+}
+
+// Auto play music on load
+window.addEventListener("load", () => {
+  playMusic(0);
+});
+
+fetchLanyard();
+setInterval(fetchLanyard, 10000);
+</script>
+
+</body>
+</html>
